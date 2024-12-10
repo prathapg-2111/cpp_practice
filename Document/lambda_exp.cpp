@@ -1,4 +1,12 @@
 #include <iostream>
+template <typename T>
+struct Unnamed
+{
+    T operator()(T x, T y) const
+    {
+        return x + y;
+    }
+};
 
 int main()
 {
@@ -8,10 +16,12 @@ int main()
     };
     fn();
     std::cout << typeid(fn).name() << std::endl;
-    auto sum = [](int x, int y)
+    auto sum = [](auto x, auto y) noexcept(false)
     {
         return x + y;
     };
     std::cout << sum(5, 2) << std::endl;
+    Unnamed<int> n;
+    std::cout << n(5, 2) << std::endl;
     return 0;
 }
