@@ -16,6 +16,14 @@ void Sort(T (&arr)[size], Comparator comp)
         }
     }
 }
+struct Comp2
+{
+    bool operator()(int x, int y)
+    {
+        return x > y;
+    }
+};
+
 bool Comp(int x, int y)
 {
     return x > y;
@@ -27,15 +35,15 @@ bool Comp1(int x, int y)
 
 int main()
 {
-    //   Comp2 comp;
-    // comp(3, 5);
+    Comp2 comp;
+    comp(3, 5);
     int arr[] = {1, 6, 8, 4, 0};
     for (auto x : arr)
     {
         std::cout << x << " ";
     }
     std::cout << std::endl;
-    Sort(arr, Comp1);
+    Sort(arr, comp);
     for (auto x : arr)
     {
         std::cout << x << " ";
