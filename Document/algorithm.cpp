@@ -34,12 +34,23 @@ public:
     //}
 };
 
+struct EmpIds
+{
+    std::vector<int> m_Ids;
+    void operator()(const Employee &emp)
+    {
+        if (emp.GetProgrammingLanguage() == "C++")
+        {
+            m_Ids.push_back(emp.GetId());
+        }
+    }
+};
 void UserDefined()
 {
     std::vector<Employee> v{
         Employee{"Prathap", 101, "C++"},
         Employee("Bob", 202, "Java"),
-        Employee("Joey", 200, "Go lang")};
+        Employee("Joey", 200, "C++")};
     std::sort(v.begin(), v.end(), [](const auto &e1, const auto &e2)
               { return e1.GetName() < e2.GetName(); });
     for (const auto &e : v)
@@ -47,6 +58,28 @@ void UserDefined()
         std::cout << "Id:" << e.GetId()
                   << "| Name: " << e.GetName() << "| Language: " << e.GetProgrammingLanguage()
                   << std::endl;
+    }
+
+    int cppCount{};
+    /*for (const auto &e : v)
+    {
+        if (e.GetProgrammingLanguage() == "C++")
+            ++cppCount;
+    }*/
+    cppCount = std::count_if(v.begin(), v.end(), [](const auto &e)
+                             { return e.GetProgrammingLanguage() == "C++"; });
+    std::cout << "Count: " << cppCount << std::endl;
+    auto itr = std::find_if(v.begin(), v.end(), [](const auto &e)
+                            { return e.GetProgrammingLanguage() == "Java"; });
+    if (itr != v.end())
+        std::cout << "Found " << itr->GetName() << " is a Java programmer" << std::endl;
+    std::for_each(v.begin(), v.end(), [](const auto &e)
+                  { std::cout << e.GetName() << std::endl; });
+
+    auto foundIds = std::for_each(v.begin(), v.end(), EmpIds());
+    for (int id : foundIds.m_Ids)
+    {
+        std::cout << "Id" << id << std::endl;
     }
 }
 
@@ -75,7 +108,7 @@ void Set()
 
 int main()
 {
-    // UserDefined();
-    Set();
+    UserDefined();
+    // Set();
     return 0;
 }
